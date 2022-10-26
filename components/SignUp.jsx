@@ -39,7 +39,7 @@ export default function SignUp() {
             Sign up to continue!
           </Heading>
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{ email: "", password: "", passwordConfirm: "" }}
             onSubmit={(values) => console.log(values)}
           >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -70,7 +70,15 @@ export default function SignUp() {
                 </FormControl>
                 <FormControl>
                   <FormControl.Label>Confirm Password</FormControl.Label>
-                  <Input type="password" variant="rounded" />
+                  <Input
+                    // type="password"
+                    variant="rounded"
+                    name="passwordConfirm"
+                    placeholder="passwordConfirm"
+                    onChangeText={handleChange("passwordConfirm")}
+                    onBlur={handleBlur("passwordConfirm")}
+                    value={values.passwordConfirm}
+                  />
                 </FormControl>
                 <Button
                   mt="3"
