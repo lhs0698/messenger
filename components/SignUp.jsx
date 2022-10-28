@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Alert, SafeAreaView, Text } from "react-native";
 import { Formik } from "formik";
 import {
@@ -11,7 +11,7 @@ import {
   Center,
   NativeBaseProvider,
 } from "native-base";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider ,signInWithPopup } from "firebase/auth";
 
 export default function SignUp() {
   const auth = getAuth();
@@ -24,6 +24,22 @@ export default function SignUp() {
         console.log(error);
       });
   };
+
+  const googleSignUp = () => {
+    
+
+    const provider = new GoogleAuthProvider(); // provider를 구글로 설정
+    signInWithPopup(auth, provider) // popup을 이용한 signup
+      .then((data) => {
+        setUserData(data.user); // user data 설정
+        console.log(data); // console로 들어온 데이터 표시
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
+  
 
   return (
     <NativeBaseProvider>
@@ -100,6 +116,15 @@ export default function SignUp() {
                   title="Submit"
                 >
                   Sign up
+                </Button>
+                <Button
+                  mt="1"
+                  colorScheme="indigo"
+                  borderRadius="20px"
+                  onPress={googleSignUp}
+                  title="Submit"
+                >
+                  google Login
                 </Button>
               </VStack>
             )}
