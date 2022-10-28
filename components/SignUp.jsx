@@ -11,8 +11,20 @@ import {
   Center,
   NativeBaseProvider,
 } from "native-base";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function SignUp() {
+  const auth = getAuth();
+  const onSubmit = (data) => {
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        console.log(userCredential);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <NativeBaseProvider>
       <Center w="350px" flex={1}>
@@ -40,7 +52,7 @@ export default function SignUp() {
           </Heading>
           <Formik
             initialValues={{ email: "", password: "", passwordConfirm: "" }}
-            onSubmit={(values) => console.log(values)}
+            onSubmit={onSubmit}
           >
             {({ handleChange, handleBlur, handleSubmit, values }) => (
               <VStack space={3} mt="5">
