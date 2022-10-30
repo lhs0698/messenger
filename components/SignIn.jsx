@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import {
   Box,
   Text,
@@ -14,7 +13,7 @@ import {
   NativeBaseProvider,
 } from "native-base";
 
-export default function SignIn() {
+export default function SignIn( { navigation } ) {
   return (
     <NativeBaseProvider>
       <Center w="350px" flex={1}>
@@ -60,8 +59,8 @@ export default function SignIn() {
                 Forget Password?
               </Link>
             </FormControl>
-            <Button mt="2" colorScheme="indigo" borderRadius="20px">
-              Sign in
+            <Button mt="2" colorScheme="indigo" borderRadius="20px" >
+              Sign In
             </Button>
             <HStack mt="6" justifyContent="center">
               <Text
@@ -79,7 +78,7 @@ export default function SignIn() {
                   fontWeight: "medium",
                   fontSize: "sm",
                 }}
-                href="#"
+                onPress={() => navigation.navigate("SignUp")}
               >
                 Sign Up
               </Link>

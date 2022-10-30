@@ -1,3 +1,4 @@
+
 const firebaseConfig = {
   apiKey: "AIzaSyAlCHMsF0iHBw0IfBkMKeKnwgoGJlI7zcM",
   authDomain: "chat-9f718.firebaseapp.com",
@@ -9,5 +10,7 @@ const firebaseConfig = {
   appId: "1:1004261001729:web:38ea69218a57a243054e00",
   measurementId: "G-8CPXXFTQJF",
 };
+
+
 
 export default firebaseConfig;
