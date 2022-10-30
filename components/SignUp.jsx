@@ -19,6 +19,7 @@ export default function SignUp() {
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         console.log(userCredential);
+        alert("성공")
       })
       .catch((error) => {
         console.log(error);
@@ -26,13 +27,13 @@ export default function SignUp() {
   };
 
   const googleSignUp = () => {
-    
 
     const provider = new GoogleAuthProvider(); // provider를 구글로 설정
     signInWithPopup(auth, provider) // popup을 이용한 signup
       .then((data) => {
         setUserData(data.user); // user data 설정
         console.log(data); // console로 들어온 데이터 표시
+        alert("구글 로그인성공")
       })
       .catch((err) => {
         console.log(err);
