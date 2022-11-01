@@ -11,7 +11,13 @@ import {
   Center,
   NativeBaseProvider,
 } from "native-base";
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider ,signInWithPopup } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import * as yup from "yup";
 
 export default function SignUp() {
   const auth = getAuth();
@@ -19,7 +25,7 @@ export default function SignUp() {
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         console.log(userCredential);
-        alert("성공")
+        alert("성공");
       })
       .catch((error) => {
         console.log(error);
@@ -27,20 +33,32 @@ export default function SignUp() {
   };
 
   const googleSignUp = () => {
-
     const provider = new GoogleAuthProvider(); // provider를 구글로 설정
     signInWithPopup(auth, provider) // popup을 이용한 signup
       .then((data) => {
         setUserData(data.user); // user data 설정
         console.log(data); // console로 들어온 데이터 표시
-        alert("구글 로그인성공")
+        alert("구글 로그인성공");
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  
-  
+
+  const validate = (values) => {
+    const errors = {};
+
+    if (!values.email) {
+      errors.email = "Required";
+    } else if (
+      !RegExp(
+        /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+      ).test(values.email)
+    ) {
+      errors.email = "Need to be email format.";
+    }
+    return errors;
+  };
 
   return (
     <NativeBaseProvider>
@@ -70,8 +88,9 @@ export default function SignUp() {
           <Formik
             initialValues={{ email: "", password: "", passwordConfirm: "" }}
             onSubmit={onSubmit}
+            validate={validate}
           >
-            {({ handleChange, handleBlur, handleSubmit, values }) => (
+            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
               <VStack space={3} mt="5">
                 <FormControl>
                   <FormControl.Label>Email</FormControl.Label>
@@ -84,6 +103,9 @@ export default function SignUp() {
                     value={values.email}
                     keyboardType="email-address"
                   />
+                  <FormControl.ErrorMessage>
+                    {errors.email}
+                  </FormControl.ErrorMessage>
                 </FormControl>
                 <FormControl>
                   <FormControl.Label>Password</FormControl.Label>
