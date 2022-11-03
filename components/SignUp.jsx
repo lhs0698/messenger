@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Alert, SafeAreaView, Text } from "react-native";
-import { Formik } from "formik";
 import {
   Box,
   Heading,
@@ -17,6 +15,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
+import { Formik } from "formik";
 import * as yup from "yup";
 
 export default function SignUp() {
@@ -45,20 +44,23 @@ export default function SignUp() {
       });
   };
 
-  const validate = (values) => {
-    const errors = {};
-
-    if (!values.email) {
-      errors.email = "Required";
-    } else if (
-      !RegExp(
-        /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
-      ).test(values.email)
-    ) {
-      errors.email = "Need to be email format.";
-    }
-    return errors;
-  };
+  const validationSchema = yup.object({
+    email: yup
+      .string()
+      .required("required!!!")
+      .email("이메일 형식이 아닙니다!"),
+    password: yup
+      .string()
+      .required("required!!!")
+      .matches(
+        /^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*()?_~]).{8,24}$/,
+        "영문,숫자,특수문자[!@#$%^&*()?_~]를 모두 포함한 8~24자리 사용 가능."
+      ),
+    passwordConfirm: yup
+      .string()
+      .required("required!!!")
+      .oneOf([yup.ref("password"), null], "비밀번호가 다릅니다!"),
+  });
 
   return (
     <NativeBaseProvider>
@@ -88,11 +90,11 @@ export default function SignUp() {
           <Formik
             initialValues={{ email: "", password: "", passwordConfirm: "" }}
             onSubmit={onSubmit}
-            validate={validate}
+            validationSchema={validationSchema}
           >
             {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
               <VStack space={3} mt="5">
-                <FormControl>
+                <FormControl isRequired isInvalid={"email" in errors}>
                   <FormControl.Label>Email</FormControl.Label>
                   <Input
                     variant="rounded"
@@ -107,10 +109,10 @@ export default function SignUp() {
                     {errors.email}
                   </FormControl.ErrorMessage>
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired isInvalid={"password" in errors}>
                   <FormControl.Label>Password</FormControl.Label>
                   <Input
-                    // type="password"
+                    type="password"
                     variant="rounded"
                     name="password"
                     placeholder="PASSWORD"
@@ -118,11 +120,14 @@ export default function SignUp() {
                     onBlur={handleBlur("password")}
                     value={values.password}
                   />
+                  <FormControl.ErrorMessage>
+                    {errors.password}
+                  </FormControl.ErrorMessage>
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired isInvalid={"passwordConfirm" in errors}>
                   <FormControl.Label>Confirm Password</FormControl.Label>
                   <Input
-                    // type="password"
+                    type="password"
                     variant="rounded"
                     name="passwordConfirm"
                     placeholder="passwordConfirm"
@@ -130,6 +135,9 @@ export default function SignUp() {
                     onBlur={handleBlur("passwordConfirm")}
                     value={values.passwordConfirm}
                   />
+                  <FormControl.ErrorMessage>
+                    {errors.passwordConfirm}
+                  </FormControl.ErrorMessage>
                 </FormControl>
                 <Button
                   mt="3"
