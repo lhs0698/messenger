@@ -64,8 +64,8 @@ export default function SignUp() {
 
   return (
     <NativeBaseProvider>
-      <Center w="350px" flex={1}>
-        <Box safeArea p="2" w="90%" maxW="290" py="8">
+      <Center w="100%" flex={1}>
+        <Box safeArea p="2" w="90%" maxW="290" py="8" alignSelf="center">
           <Heading
             size="lg"
             color="coolGray.800"

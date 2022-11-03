@@ -13,11 +13,11 @@ import {
   NativeBaseProvider,
 } from "native-base";
 
-export default function SignIn( { navigation } ) {
+export default function SignIn({ navigation }) {
   return (
     <NativeBaseProvider>
-      <Center w="350px" flex={1}>
-        <Box safeArea p="2" py="8" w="90%" maxW="290">
+      <Center w="100%" flex={1}>
+        <Box safeArea p="2" py="8" w="90%" maxW="290" alignSelf="center">
           <Heading
             size="lg"
             fontWeight="600"
@@ -59,7 +59,7 @@ export default function SignIn( { navigation } ) {
                 Forget Password?
               </Link>
             </FormControl>
-            <Button mt="2" colorScheme="indigo" borderRadius="20px" >
+            <Button mt="2" colorScheme="indigo" borderRadius="20px">
               Sign In
             </Button>
             <HStack mt="6" justifyContent="center">
