@@ -12,8 +12,8 @@ import {
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
+  // GoogleAuthProvider,
+  // signInWithPopup,
 } from "firebase/auth";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -28,19 +28,6 @@ export default function SignUp() {
       })
       .catch((error) => {
         console.log(error);
-      });
-  };
-
-  const googleSignUp = () => {
-    const provider = new GoogleAuthProvider(); // provider를 구글로 설정
-    signInWithPopup(auth, provider) // popup을 이용한 signup
-      .then((data) => {
-        setUserData(data.user); // user data 설정
-        console.log(data); // console로 들어온 데이터 표시
-        alert("구글 로그인성공");
-      })
-      .catch((err) => {
-        console.log(err);
       });
   };
 
@@ -147,15 +134,6 @@ export default function SignUp() {
                   title="Submit"
                 >
                   Sign up
-                </Button>
-                <Button
-                  mt="1"
-                  colorScheme="indigo"
-                  borderRadius="20px"
-                  onPress={googleSignUp}
-                  title="Submit"
-                >
-                  google Login
                 </Button>
               </VStack>
             )}
