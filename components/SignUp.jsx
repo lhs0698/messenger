@@ -9,12 +9,7 @@ import {
   Center,
   NativeBaseProvider,
 } from "native-base";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  // GoogleAuthProvider,
-  // signInWithPopup,
-} from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
 import * as yup from "yup";
 

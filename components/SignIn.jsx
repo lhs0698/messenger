@@ -13,13 +13,29 @@ import {
   NativeBaseProvider,
 } from "native-base";
 
-import { getAuth, GoogleAuthProvider, signInWithPopup, } from "firebase/auth";
-
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { Formik } from "formik";
 
 export default function SignIn({ navigation }) {
-
   const auth = getAuth();
-  
+
+  const onSubmit = (data) => {
+    signInWithEmailAndPassword(auth, data.loginEmail, data.loginPassword)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        alert("성공!");
+      })
+      .catch((error) => {
+        alert("fail");
+      });
+  };
+
   const googleSignUp = () => {
     const provider = new GoogleAuthProvider(); // provider를 구글로 설정
     signInWithPopup(auth, provider) // popup을 이용한 signup
@@ -58,60 +74,85 @@ export default function SignIn({ navigation }) {
           >
             Sign in to continue!
           </Heading>
-          <VStack space={3} mt="5">
-            <FormControl>
-              <FormControl.Label>Email ID</FormControl.Label>
-              <Input variant="rounded" />
-            </FormControl>
-            <FormControl>
-              <FormControl.Label>Password</FormControl.Label>
-              <Input variant="rounded" type="password" />
-              <Link
-                _text={{
-                  fontSize: "xs",
-                  fontWeight: "500",
-                  color: "indigo.500",
-                }}
-                alignSelf="flex-end"
-                mt="1"
-              >
-                Forget Password?
-              </Link>
-            </FormControl>
-            <Button mt="2" colorScheme="indigo" borderRadius="20px">
-              Sign In
-            </Button>
-            <Button
-              mt="1"
-              colorScheme="indigo"
-              borderRadius="20px"
-              onPress={googleSignUp}
-              title="Submit"
-            >
-              google Login
-            </Button>
-            <HStack mt="6" justifyContent="center">
-              <Text
-                fontSize="sm"
-                color="coolGray.600"
-                _dark={{
-                  color: "warmGray.200",
-                }}
-              >
-                I'm a new user.{" "}
-              </Text>
-              <Link
-                _text={{
-                  color: "indigo.500",
-                  fontWeight: "medium",
-                  fontSize: "sm",
-                }}
-                onPress={() => navigation.navigate("SignUp")}
-              >
-                Sign Up
-              </Link>
-            </HStack>
-          </VStack>
+          <Formik
+            initialValues={{ loginEmail: "", loginPassword: "" }}
+            onSubmit={onSubmit}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+              <VStack space={3} mt="5">
+                <FormControl>
+                  <FormControl.Label>Email ID</FormControl.Label>
+                  <Input
+                    variant="rounded"
+                    name="loginEmail"
+                    onChangeText={handleChange("loginEmail")}
+                    onBlur={handleBlur("loginEmail")}
+                    value={values.loginEmail}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormControl.Label>Password</FormControl.Label>
+                  <Input
+                    variant="rounded"
+                    type="password"
+                    name="loginPassword"
+                    onChangeText={handleChange("loginPassword")}
+                    onBlur={handleBlur("loginPassword")}
+                    value={values.loginPassword}
+                  />
+                  <Link
+                    _text={{
+                      fontSize: "xs",
+                      fontWeight: "500",
+                      color: "indigo.500",
+                    }}
+                    alignSelf="flex-end"
+                    mt="1"
+                  >
+                    Forget Password?
+                  </Link>
+                </FormControl>
+                <Button
+                  mt="2"
+                  colorScheme="indigo"
+                  borderRadius="20px"
+                  onPress={handleSubmit}
+                >
+                  Sign In
+                </Button>
+                <Button
+                  mt="1"
+                  colorScheme="indigo"
+                  borderRadius="20px"
+                  onPress={googleSignUp}
+                  title="Submit"
+                >
+                  google Login
+                </Button>
+                <HStack mt="6" justifyContent="center">
+                  <Text
+                    fontSize="sm"
+                    color="coolGray.600"
+                    _dark={{
+                      color: "warmGray.200",
+                    }}
+                  >
+                    I'm a new user.{" "}
+                  </Text>
+                  <Link
+                    _text={{
+                      color: "indigo.500",
+                      fontWeight: "medium",
+                      fontSize: "sm",
+                    }}
+                    onPress={() => navigation.navigate("SignUp")}
+                  >
+                    Sign Up
+                  </Link>
+                </HStack>
+              </VStack>
+            )}
+          </Formik>
         </Box>
       </Center>
     </NativeBaseProvider>
