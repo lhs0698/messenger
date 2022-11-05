@@ -1,4 +1,4 @@
-const { AsyncStorage } = require("react-native");
+// const { AsyncStorage } = require("react-native");
 
 const firebaseConfig = {
   apiKey: "AIzaSyAlCHMsF0iHBw0IfBkMKeKnwgoGJlI7zcM",

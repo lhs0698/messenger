@@ -24,7 +24,7 @@ export default function SignUp() {
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         console.log(userCredential);
-        alert("성공");
+        alert("성공!!");
       })
       .catch((error) => {
         console.log(error);
