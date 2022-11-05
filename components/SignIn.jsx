@@ -30,8 +30,10 @@ export default function SignIn({ navigation }) {
         const user = userCredential.user;
         console.log(user);
         alert("성공!");
+        navigation.navigate("List");
       })
       .catch((error) => {
+        console.log(error)
         alert("fail");
       });
   };
@@ -108,6 +110,7 @@ export default function SignIn({ navigation }) {
                     }}
                     alignSelf="flex-end"
                     mt="1"
+                    onPress={() => navigation.navigate("List")}
                   >
                     Forget Password?
                   </Link>
@@ -145,7 +148,7 @@ export default function SignIn({ navigation }) {
                       fontWeight: "medium",
                       fontSize: "sm",
                     }}
-                    onPress={() => navigation.navigate("SignUp")}
+                    // onPress={() => navigation.navigate("SignUp")}
                   >
                     Sign Up
                   </Link>
