@@ -30,7 +30,7 @@ export default function SignIn({ navigation }) {
         const user = userCredential.user;
         console.log(user);
         alert("성공!");
-        navigation.navigate("List");
+        navigation.navigate("Rooms");
       })
       .catch((error) => {
         console.log(error)
@@ -87,9 +87,11 @@ export default function SignIn({ navigation }) {
                   <Input
                     variant="rounded"
                     name="loginEmail"
+                    placeholder="Email"
                     onChangeText={handleChange("loginEmail")}
                     onBlur={handleBlur("loginEmail")}
                     value={values.loginEmail}
+                    keyboardType="email-address"
                   />
                 </FormControl>
                 <FormControl>
@@ -97,6 +99,7 @@ export default function SignIn({ navigation }) {
                   <Input
                     variant="rounded"
                     type="password"
+                    placeholder="Password"
                     name="loginPassword"
                     onChangeText={handleChange("loginPassword")}
                     onBlur={handleBlur("loginPassword")}
@@ -148,7 +151,7 @@ export default function SignIn({ navigation }) {
                       fontWeight: "medium",
                       fontSize: "sm",
                     }}
-                    // onPress={() => navigation.navigate("SignUp")}
+                    onPress={() => navigation.navigate("SignUp")}
                   >
                     Sign Up
                   </Link>

@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
-import List from "./components/List";
+import Rooms from "./components/Rooms";
 
 import { initializeApp } from "firebase/app";
 import firebaseConfig from "./firebase_config";
@@ -22,7 +22,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="SignIn">
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="List" component={List} />
+        <Stack.Screen name="Rooms" component={Rooms} />
       </Stack.Navigator>
     </NavigationContainer>
   );
