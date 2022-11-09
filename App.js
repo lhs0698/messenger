@@ -6,11 +6,11 @@ import SignUp from "./components/SignUp";
 import Rooms from "./components/Rooms";
 
 import { initializeApp } from "firebase/app";
+// import { getFirestore } from "firebase/firestore";
 import firebaseConfig from "./firebase_config";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-// import { Center } from "native-base";
 
 const Stack = createStackNavigator();
 

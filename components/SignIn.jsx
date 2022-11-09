@@ -33,7 +33,7 @@ export default function SignIn({ navigation }) {
         navigation.navigate("Rooms");
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         alert("fail");
         location.reload();
       });
@@ -50,6 +50,12 @@ export default function SignIn({ navigation }) {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const onEnter = (e) => {
+    if (e.key === "Enter") {
+      console.log("Enter");
+    }
   };
 
   return (
@@ -105,6 +111,7 @@ export default function SignIn({ navigation }) {
                     onChangeText={handleChange("loginPassword")}
                     onBlur={handleBlur("loginPassword")}
                     value={values.loginPassword}
+                    onKeyPress={onEnter}
                   />
                   <Link
                     _text={{
