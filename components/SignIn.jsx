@@ -52,12 +52,6 @@ export default function SignIn({ navigation }) {
       });
   };
 
-  const onEnter = (e) => {
-    if (e.key === "Enter") {
-      console.log("Enter");
-    }
-  };
-
   return (
     <NativeBaseProvider>
       <Center w="100%" flex={1}>
@@ -111,7 +105,11 @@ export default function SignIn({ navigation }) {
                     onChangeText={handleChange("loginPassword")}
                     onBlur={handleBlur("loginPassword")}
                     value={values.loginPassword}
-                    onKeyPress={onEnter}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        handleSubmit();
+                      }
+                    }}
                   />
                   <Link
                     _text={{
@@ -121,7 +119,6 @@ export default function SignIn({ navigation }) {
                     }}
                     alignSelf="flex-end"
                     mt="1"
-                    onPress={() => navigation.navigate("List")}
                   >
                     Forget Password?
                   </Link>
