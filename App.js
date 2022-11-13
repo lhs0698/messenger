@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Rooms from "./components/Rooms";
+import ChatRoom from "./components/ChatRoom";
 
 import { initializeApp } from "firebase/app";
-// import { getFirestore } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore"
 import firebaseConfig from "./firebase_config";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -19,20 +19,21 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SignIn">
+      <Stack.Navigator initialRouteName="ChatRoom">
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Rooms" component={Rooms} />
+        <Stack.Screen name="ChatRoom" component={ChatRoom}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#fff",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+// });

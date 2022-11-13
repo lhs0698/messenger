@@ -14,6 +14,8 @@ import { AntDesign } from '@expo/vector-icons';
 
 export default function RoomModal() {
   const [showModal, setShowModal] = useState(false);
+  
+
   return (
     <NativeBaseProvider>
       <Fab
@@ -55,7 +57,6 @@ export default function RoomModal() {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-      {/* </Center> */}
     </NativeBaseProvider>
   );
 }
