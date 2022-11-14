@@ -4,8 +4,6 @@ import {
   Modal,
   FormControl,
   Input,
-  Flex,
-  Center,
   NativeBaseProvider,
   Fab,
   Icon,
