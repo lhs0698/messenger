@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
   Box,
   Text,
@@ -111,20 +111,9 @@ export default function SignIn({ navigation }) {
                       }
                     }}
                   />
-                  <Link
-                    _text={{
-                      fontSize: "xs",
-                      fontWeight: "500",
-                      color: "indigo.500",
-                    }}
-                    alignSelf="flex-end"
-                    mt="1"
-                  >
-                    Forget Password?
-                  </Link>
                 </FormControl>
                 <Button
-                  mt="2"
+                  mt="3"
                   colorScheme="indigo"
                   borderRadius="20px"
                   onPress={handleSubmit}
