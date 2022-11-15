@@ -1,6 +1,5 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
-
 import { NativeBaseProvider, Input, IconButton, Box, Icon } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 

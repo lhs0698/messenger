@@ -14,6 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { db } from "../firebase_config";
 // firebase_config 에서 export한 db import
 import { addDoc, collection } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid"; // id의 고유한 값을 주기위함
 
 export default function RoomModal() {
   const [showModal, setShowModal] = useState(false);
@@ -30,7 +31,7 @@ export default function RoomModal() {
       console.log("roomname:" + roomName);
       await addDoc(collection(db, "rooms"), {
         name: roomName,
-        id: 1,
+        id: uuidv4(),
         createdAt: new Date().toString(),
       });
     } catch (e) {
@@ -41,9 +42,6 @@ export default function RoomModal() {
 
   return (
     <NativeBaseProvider>
-      <View>
-        <Text></Text>
-      </View>
       <Fab
         renderInPortal={false}
         shadow={2}
