@@ -20,6 +20,7 @@ export default function SignUp() {
       .then((userCredential) => {
         console.log(userCredential);
         alert("성공!!");
+        navigation.navigate("SignIn");
       })
       .catch((error) => {
         console.log(error);

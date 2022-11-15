@@ -6,7 +6,6 @@ import Rooms from "./components/Rooms";
 import ChatRoom from "./components/ChatRoom";
 
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore"
 import firebaseConfig from "./firebase_config";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -19,11 +18,11 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="ChatRoom">
+      <Stack.Navigator initialRouteName="SignIn">
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Rooms" component={Rooms} />
-        <Stack.Screen name="ChatRoom" component={ChatRoom}/>
+        <Stack.Screen name="ChatRoom" component={ChatRoom} />
       </Stack.Navigator>
     </NavigationContainer>
   );

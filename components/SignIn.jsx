@@ -35,7 +35,6 @@ export default function SignIn({ navigation }) {
       .catch((error) => {
         console.log(error);
         alert("fail");
-        location.reload();
       });
   };
 

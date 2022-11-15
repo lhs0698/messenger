@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Text, View } from "react-native";
 import {
   Button,
   Modal,
@@ -10,11 +11,39 @@ import {
 } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 
+import { db } from "../firebase_config";
+// firebase_config 에서 export한 db import
+import { addDoc, collection } from "firebase/firestore";
+
 export default function RoomModal() {
   const [showModal, setShowModal] = useState(false);
+  // modal state
+
+  const [roomName, setRoomName] = useState("");
+
+  const inputChange = (text) => {
+    setRoomName(text);
+  };
+
+  const addRoom = async () => {
+    try {
+      console.log("roomname:" + roomName);
+      await addDoc(collection(db, "rooms"), {
+        name: roomName,
+        id: 1,
+        createdAt: new Date().toString(),
+      });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+  // addRoom 함수 = cloud Firestore collection 추가
 
   return (
     <NativeBaseProvider>
+      <View>
+        <Text></Text>
+      </View>
       <Fab
         renderInPortal={false}
         shadow={2}
@@ -29,7 +58,7 @@ export default function RoomModal() {
           <Modal.Body>
             <FormControl>
               <FormControl.Label>방 이름</FormControl.Label>
-              <Input />
+              <Input onChangeText={inputChange} />
             </FormControl>
           </Modal.Body>
           <Modal.Footer>
@@ -46,6 +75,7 @@ export default function RoomModal() {
               <Button
                 onPress={() => {
                   setShowModal(false);
+                  addRoom();
                 }}
               >
                 만들기

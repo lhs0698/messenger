@@ -1,4 +1,3 @@
-// const { AsyncStorage } = require("react-native");
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
@@ -15,6 +14,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// const db = getFirestore(app); export를 해줘야 한다.
+export const db = getFirestore(app);
 
 export default firebaseConfig;
