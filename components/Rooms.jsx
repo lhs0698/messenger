@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import {
   Button,
   Modal,
@@ -13,8 +13,9 @@ import { AntDesign } from "@expo/vector-icons";
 
 import { db } from "../firebase_config";
 // firebase_config 에서 export한 db import
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid"; // id의 고유한 값을 주기위함
+import { async } from "@firebase/util";
 
 // import { doc, setDoc, Timestamp } from "firebase/firestore";
 // import { getFirestore } from "firebase/firestore";
@@ -31,18 +32,42 @@ export default function Rooms() {
   const addRoom = async () => {
     try {
       console.log("roomname:" + roomName);
-      await addDoc(collection(db, "rooms"), {
+      await addDoc(collection(db, "Rooms"), {
         name: roomName,
         id: uuidv4(),
         createdAt: new Date().toString(),
-        // creator: AUTH("내꺼")
       });
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
+  const Test2 = async () => {
+    const docRef = doc(collection(db, "Rooms"));
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+    } else {
+      console.log("No such document!");
+    }
+  };
+  // 문서 가져오기
+
+  const Test = async () => {
+    const querySnapshot = await getDocs(collection(db, "Rooms"));
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data());
+    });
+  };
+  // 모든 문서 가져오기
+
   return (
     <NativeBaseProvider>
+      <Button onPress={Test}>Test</Button>
+      <View style={styles.container}>
+        <Text>{db.addDoc}</Text>
+      </View>
       <Fab
         renderInPortal={false}
         shadow={2}
@@ -86,3 +111,12 @@ export default function Rooms() {
     </NativeBaseProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    height: 70,
+    backgroundColor: "#fff",
+    border: "solid",
+  },
+});
