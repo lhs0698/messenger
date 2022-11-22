@@ -5,8 +5,8 @@ import SignUp from "./components/SignUp";
 import Rooms from "./components/Rooms";
 import ChatRoom from "./components/ChatRoom";
 
-import { initializeApp } from "firebase/app";
-import firebaseConfig from "./firebase_config";
+// import { initializeApp } from "firebase/app";
+// import firebaseConfig from "./firebase_config";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -14,7 +14,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 
 export default function App() {
-  initializeApp(firebaseConfig);
+  // initializeApp(firebaseConfig);
 
   return (
     <NavigationContainer>

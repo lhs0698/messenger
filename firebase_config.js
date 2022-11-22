@@ -1,6 +1,16 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
+const firebaseConfigR6 = {
+  apiKey: "AIzaSyDlXvB48UvZRD1Xar-mkpTWWdQz6vY3nus",
+  authDomain: "e-avp-4a732.firebaseapp.com",
+  projectId: "e-avp-4a732",
+  storageBucket: "e-avp-4a732.appspot.com",
+  messagingSenderId: "694772972005",
+  appId: "1:694772972005:web:a2e0b788b7b96f2fffd70c",
+  measurementId: "G-BDVQYDEP1K"
+};
+
 const firebaseConfig = {
   apiKey: "AIzaSyAlCHMsF0iHBw0IfBkMKeKnwgoGJlI7zcM",
   authDomain: "chat-9f718.firebaseapp.com",
@@ -13,8 +23,6 @@ const firebaseConfig = {
   measurementId: "G-8CPXXFTQJF",
 };
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfigR6);
 // const db = getFirestore(app); export를 해줘야 한다.
 export const db = getFirestore(app);
-
-export default firebaseConfig;
