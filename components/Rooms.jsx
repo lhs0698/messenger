@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import {
   Button,
@@ -12,7 +12,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { db } from "../firebase_config";
 // firebase_config 에서 export한 db import
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, where, query } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid"; // id의 고유한 값을 주기위한 라이브러리 uuid
 
 
@@ -24,6 +24,9 @@ export default function Rooms() {
   // modal state
   const [roomName, setRoomName] = useState("");
 
+  const [roomList, setRoomList] = useState([]);
+
+
   const inputChange = (text) => {
     setRoomName(text);
   };
@@ -31,19 +34,41 @@ export default function Rooms() {
   const addRoom = async () => {
     try {
       console.log("roomname:" + roomName);
+      // 데이터 추가
+
+      const newRoomName = roomName;
+      const roomUUID = uuidv4();
+      console.log('roomUUID: ', roomUUID);
+
       await addDoc(collection(db, "Rooms"), {
-        name: roomName,
-        id: uuidv4(),
+        name: newRoomName,
+        id: roomUUID,
         createdAt: new Date().toString(),
-      }) // 데이터 추가
-      const querySnapshot = await getDocs(collection(db, "Rooms"));
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id, "=>", doc.data());
-      }) // 데이터 가져오기 
+      });
+      
+      const roomRef = collection(db, "Rooms");
+
+      // 새로생성한 방 데이터 가져오기
+      const q = query(roomRef, where('id', '==', roomUUID));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(doc => {
+        console.log(doc.id, " => ", doc.data());
+
+        const roomDoc = doc.data();
+        // setRoomList([
+        //   ...roomList,
+        //   roomDoc
+        // ]);
+
+        
+        setRoomList((state) => [...state, roomDoc]);
+      });
+
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
+
   // const Test2 = async () => {
   //   const docRef = doc(collection(db, "Rooms"));
   //   const docSnap = await getDoc(docRef);
@@ -67,9 +92,17 @@ export default function Rooms() {
 
   return (
     <NativeBaseProvider>
-      <View style={styles.container}>
-        <Text>왜 안되냐고</Text>
-      </View>
+      {
+        
+        roomList.map((eachRoom) => {
+          return(
+          <View key={eachRoom.id} style={styles.container}>
+            <Text>{eachRoom.name}</Text>
+          </View>
+          )
+        })
+      }
+
       <Fab
         renderInPortal={false}
         shadow={2}
