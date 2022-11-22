@@ -23,6 +23,6 @@ const firebaseConfig = {
   measurementId: "G-8CPXXFTQJF",
 };
 
-export const app = initializeApp(firebaseConfigR6);
+export const app = initializeApp(firebaseConfig);
 // const db = getFirestore(app); export를 해줘야 한다.
 export const db = getFirestore(app);

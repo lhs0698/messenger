@@ -24,9 +24,6 @@ export default function Rooms() {
   // modal state
   const [roomName, setRoomName] = useState("");
 
-  const [roomList, setRoomList] = useState([]);
-
-
   const inputChange = (text) => {
     setRoomName(text);
   };
@@ -49,20 +46,7 @@ export default function Rooms() {
       const roomRef = collection(db, "Rooms");
 
       // 새로생성한 방 데이터 가져오기
-      const q = query(roomRef, where('id', '==', roomUUID));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach(doc => {
-        console.log(doc.id, " => ", doc.data());
-
-        const roomDoc = doc.data();
-        // setRoomList([
-        //   ...roomList,
-        //   roomDoc
-        // ]);
-
-        
-        setRoomList((state) => [...state, roomDoc]);
-      });
+      
 
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -92,16 +76,6 @@ export default function Rooms() {
 
   return (
     <NativeBaseProvider>
-      {
-        
-        roomList.map((eachRoom) => {
-          return(
-          <View key={eachRoom.id} style={styles.container}>
-            <Text>{eachRoom.name}</Text>
-          </View>
-          )
-        })
-      }
 
       <Fab
         renderInPortal={false}
