@@ -24,18 +24,20 @@ export default function Rooms() {
   // modal state
   const [roomName, setRoomName] = useState("");
 
+  const [roomList, setRoomList] = useState([]);
+
   const inputChange = (text) => {
     setRoomName(text);
   };
 
   const addRoom = async () => {
     try {
-      console.log("roomname:" + roomName);
+      // console.log("roomname:" + roomName);
       // 데이터 추가
 
       const newRoomName = roomName;
       const roomUUID = uuidv4();
-      console.log('roomUUID: ', roomUUID);
+      // console.log('roomUUID: ', roomUUID);
 
       await addDoc(collection(db, "Rooms"), {
         name: newRoomName,
@@ -46,6 +48,18 @@ export default function Rooms() {
       const roomRef = collection(db, "Rooms");
 
       // 새로생성한 방 데이터 가져오기
+      const q = query(roomRef, where('id', '==', roomUUID));
+      // collection의 문서를 query하여 여러문서를 검색한다, where()을 사용해서 특정 조건을 충족하는 문서를 가져온다. ex) id와 roomUUID와 같으면 가져온다.
+      // where 을 생략하면 collection의 모든 문서를 검색할 수 있다. 
+
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(doc => {
+        console.log(doc.id, " => ", doc.data());
+
+        const roomDoc = doc.data();
+
+        setRoomList((state) => [...state, roomDoc]);
+      })
       
 
     } catch (e) {
@@ -76,7 +90,15 @@ export default function Rooms() {
 
   return (
     <NativeBaseProvider>
-
+      {
+        roomList.map((eachroom) => {
+          return(
+            <View style={styles.container} key={eachroom.id}>
+              <Text>{eachroom.name}</Text>
+            </View>
+          )
+        })
+      }
       <Fab
         renderInPortal={false}
         shadow={2}
