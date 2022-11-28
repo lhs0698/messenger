@@ -24,6 +24,7 @@ import {
   query,
   deleteDoc,
 } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { v4 as uuidv4 } from "uuid"; // id의 고유한 값을 주기위한 라이브러리 uuid
 
 // import { doc, setDoc, Timestamp } from "firebase/firestore";
@@ -33,10 +34,18 @@ export default function Rooms() {
   const [showModal, setShowModal] = useState(false);
   const [roomName, setRoomName] = useState("");
   const [roomList, setRoomList] = useState([]);
+  const [loginEmail, setLoginEmail] = useState();
 
   const inputChange = (text) => {
     setRoomName(text);
   };
+
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setLoginEmail(user.email);
+    }
+  });
 
   const addRoom = async () => {
     try {
@@ -48,7 +57,7 @@ export default function Rooms() {
         name: newRoomName,
         id: roomUUID,
         createdAt: new Date().toString(),
-        
+        creator: loginEmail,
       });
 
       const roomRef = collection(db, "Rooms");
@@ -73,7 +82,6 @@ export default function Rooms() {
   const roomDelete = async () => {
     try {
       // collection의 모든 문서 가져오기
-      const [names, setNames] = useState("")
 
       const querySnapshot = await getDocs(collection(db, "Rooms"));
       querySnapshot.forEach((doc) => {
@@ -81,8 +89,6 @@ export default function Rooms() {
       });
       // 문서 삭제
       // Rooms의 문서 id를 가져와서 해당하는 문서를 삭제한다.
-
-
     } catch (e) {
       console.log("Error message :", e);
     }
