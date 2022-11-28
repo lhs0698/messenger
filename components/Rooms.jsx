@@ -8,22 +8,30 @@ import {
   NativeBaseProvider,
   Fab,
   Icon,
+  Box,
+  IconButton,
 } from "native-base";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 import { db } from "../firebase_config";
 // firebase_config 에서 export한 db import
-import { addDoc, collection, doc, getDoc, getDocs, where, query } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  where,
+  query,
+  deleteDoc,
+} from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid"; // id의 고유한 값을 주기위한 라이브러리 uuid
-
 
 // import { doc, setDoc, Timestamp } from "firebase/firestore";
 // import { getFirestore } from "firebase/firestore";
 
 export default function Rooms() {
   const [showModal, setShowModal] = useState(false);
-  // modal state
   const [roomName, setRoomName] = useState("");
-
   const [roomList, setRoomList] = useState([]);
 
   const inputChange = (text) => {
@@ -32,73 +40,69 @@ export default function Rooms() {
 
   const addRoom = async () => {
     try {
-      // console.log("roomname:" + roomName);
       // 데이터 추가
-
       const newRoomName = roomName;
       const roomUUID = uuidv4();
-      // console.log('roomUUID: ', roomUUID);
 
       await addDoc(collection(db, "Rooms"), {
         name: newRoomName,
         id: roomUUID,
         createdAt: new Date().toString(),
+        
       });
-      
-      const roomRef = collection(db, "Rooms");
 
+      const roomRef = collection(db, "Rooms");
       // 새로생성한 방 데이터 가져오기
-      const q = query(roomRef, where('id', '==', roomUUID));
+      const q = query(roomRef, where("id", "==", roomUUID));
       // collection의 문서를 query하여 여러문서를 검색한다, where()을 사용해서 특정 조건을 충족하는 문서를 가져온다. ex) id와 roomUUID와 같으면 가져온다.
-      // where 을 생략하면 collection의 모든 문서를 검색할 수 있다. 
+      // where 을 생략하면 collection의 모든 문서를 검색할 수 있다.
 
       const querySnapshot = await getDocs(q);
-      querySnapshot.forEach(doc => {
+      querySnapshot.forEach((doc) => {
         console.log(doc.id, " => ", doc.data());
 
         const roomDoc = doc.data();
-
         setRoomList((state) => [...state, roomDoc]);
-      })
-      
-
+      });
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
 
-  // const Test2 = async () => {
-  //   const docRef = doc(collection(db, "Rooms"));
-  //   const docSnap = await getDoc(docRef);
+  // roomList 삭제
+  const roomDelete = async () => {
+    try {
+      // collection의 모든 문서 가져오기
+      const [names, setNames] = useState("")
 
-  //   if (docSnap.exists()) {
-  //     console.log("Document data:", docSnap.data());
-  //   } else {
-  //     console.log("No such document!");
-  //   }
-  // };
-  // // 문서 가져오기 실패
+      const querySnapshot = await getDocs(collection(db, "Rooms"));
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+      });
+      // 문서 삭제
+      // Rooms의 문서 id를 가져와서 해당하는 문서를 삭제한다.
 
-  // const Test = async () => {
-  //   const querySnapshot = await getDocs(collection(db, "Rooms"));
-  //   querySnapshot.forEach((doc) => {
-  //     // doc.data() is never undefined for query doc snapshots
-  //     console.log(doc.id, " => ", doc.data());
-  //   });
-  // };
-  // // 모든 문서 가져오기
+
+    } catch (e) {
+      console.log("Error message :", e);
+    }
+  };
 
   return (
     <NativeBaseProvider>
-      {
-        roomList.map((eachroom) => {
-          return(
-            <View style={styles.container} key={eachroom.id}>
-              <Text>{eachroom.name}</Text>
-            </View>
-          )
-        })
-      }
+      {roomList.map((eachroom) => {
+        return (
+          <View style={styles.container} key={eachroom.id}>
+            <Text>{eachroom.name}</Text>
+            <Box w="30px">
+              <IconButton
+                icon={<Icon as={Entypo} name="trash" />}
+                onPress={roomDelete}
+              />
+            </Box>
+          </View>
+        );
+      })}
       <Fab
         renderInPortal={false}
         shadow={2}
@@ -147,7 +151,7 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: 70,
-    backgroundColor: "#fff",
+    backgroundColor: "#feff",
     border: "solid",
   },
 });
