@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, SafeAreaView,  } from "react-native";
 import {
   Button,
   Modal,
@@ -12,7 +12,8 @@ import {
   IconButton,
   HStack,
   Spinner,
-  Center
+  Center,
+  ScrollView
 } from "native-base";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import { db } from "../firebase_config";
@@ -23,7 +24,7 @@ import {
   getDocs,
   where,
   query,
-  deleteDoc,
+  deleteDoc
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { v4 as uuidv4 } from "uuid"; // id의 고유한 값을 주기위한 라이브러리 uuid
@@ -31,10 +32,12 @@ import { v4 as uuidv4 } from "uuid"; // id의 고유한 값을 주기위한 라�
 export default function Rooms() {
   const roomRef = collection(db, "Rooms");
   const [showModal, setShowModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
   const [roomName, setRoomName] = useState("");
   const [roomList, setRoomList] = useState([]);
   const [loginEmail, setLoginEmail] = useState();
   const [isLoading, setIsLoading] = useState(true);
+
 
   const inputChange = (text) => {
     setRoomName(text);
@@ -95,6 +98,18 @@ export default function Rooms() {
     getRoomList();
   }, []);
 
+  // 데이터 삭제하기
+  // const deleteUser = async () => {
+  //   const deleteRoom = [];
+
+  //   const q = query(roomRef);
+  //   const querySnapshot = await getDocs(q);
+  //   querySnapshot.forEach((doc) => {
+  //     console.log(doc.data().name)      
+  //   })
+  // }
+
+
   // 채팅 list를 가져오는 동안 보여지는 로딩화면
   if (isLoading)
     return (
@@ -109,7 +124,7 @@ export default function Rooms() {
 
   return (
     <NativeBaseProvider>
-      <View>
+      <SafeAreaView>
         {roomList.map((eachroom) => {
           return (
             <View style={styles.container} key={eachroom.id}>
@@ -117,17 +132,17 @@ export default function Rooms() {
               <Box style={styles.icon}>
                 <IconButton
                   icon={<Icon as={Entypo} name="pencil" />}
-                  // onPress={roomDelete}
+                  onPress={() => setUpdateModal(true)}
                 />
                 <IconButton
                   icon={<Icon as={Entypo} name="trash" />}
-                  // onPress={roomDelete}
+                  // onPress={deleteUser}
                 />
               </Box>
             </View>
           );
         })}
-      </View>
+      </SafeAreaView>
       <Fab
         renderInPortal={false}
         shadow={2}
@@ -163,6 +178,32 @@ export default function Rooms() {
                 }}
               >
                 만들기
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+      <Modal isOpen={updateModal} onClose={() => setUpdateModal(false)}>
+        <Modal.Content maxWidth="400px">
+          <Modal.CloseButton />
+          <Modal.Header>방 이름 수정하기</Modal.Header>
+          <Modal.Body>
+            <FormControl>
+              <FormControl.Label>방 이름</FormControl.Label>
+              <Input />
+            </FormControl>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button.Group space={2}>
+              <Button
+                variant="ghost"
+                colorScheme="blueGray"
+              >
+                취소
+              </Button>
+              <Button
+              >
+                수정하기
               </Button>
             </Button.Group>
           </Modal.Footer>
