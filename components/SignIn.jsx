@@ -12,7 +12,6 @@ import {
   Center,
   NativeBaseProvider,
 } from "native-base";
-
 import {
   getAuth,
   GoogleAuthProvider,
@@ -21,7 +20,7 @@ import {
 } from "firebase/auth";
 import { Formik } from "formik";
 
-export default function SignIn({ navigation }) {
+export default function SignIn() {
   const auth = getAuth();
 
   const onSubmit = (data) => {

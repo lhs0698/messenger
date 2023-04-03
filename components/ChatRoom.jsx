@@ -3,7 +3,7 @@ import { SafeAreaView, StyleSheet, View } from "react-native";
 import { NativeBaseProvider, Input, IconButton, Box, Icon } from "native-base";
 import { Entypo } from "@expo/vector-icons";
 
-export default function ChatRoom() {
+export default function ChatRoom(  ) {
   return (
     <NativeBaseProvider>
       <SafeAreaView style={styles.container}>

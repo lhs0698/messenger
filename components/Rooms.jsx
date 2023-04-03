@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, SafeAreaView,  } from "react-native";
+import { Text, View, StyleSheet, SafeAreaView } from "react-native";
 import {
   Button,
   Modal,
@@ -13,7 +13,6 @@ import {
   HStack,
   Spinner,
   Center,
-  ScrollView
 } from "native-base";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import { db } from "../firebase_config";
@@ -24,13 +23,14 @@ import {
   getDocs,
   where,
   query,
-  deleteDoc
+  deleteDoc,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { v4 as uuidv4 } from "uuid"; // id의 고유한 값을 주기위한 라이브러리 uuid
 
-export default function Rooms() {
-  const roomRef = collection(db, "Rooms");
+export default function Rooms({navigation}) {
   const [showModal, setShowModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [roomName, setRoomName] = useState("");
@@ -38,11 +38,11 @@ export default function Rooms() {
   const [loginEmail, setLoginEmail] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
+  const roomRef = collection(db, "Rooms");
 
   const inputChange = (text) => {
     setRoomName(text);
   };
-
   // 현재 로그인한 사용자 가져오기
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
@@ -98,50 +98,47 @@ export default function Rooms() {
     getRoomList();
   }, []);
 
-  // 데이터 삭제하기
-  // const deleteUser = async () => {
-  //   const deleteRoom = [];
-
-  //   const q = query(roomRef);
-  //   const querySnapshot = await getDocs(q);
-  //   querySnapshot.forEach((doc) => {
-  //     console.log(doc.data().name)      
-  //   })
-  // }
-
-
   // 채팅 list를 가져오는 동안 보여지는 로딩화면
   if (isLoading)
     return (
       <NativeBaseProvider>
         <Center flex={1}>
           <HStack space={8} display="flex" justifyContent="center">
-            <Spinner color="indigo.500" size="lg"/>
+            <Spinner color="indigo.500" size="lg" />
           </HStack>
         </Center>
       </NativeBaseProvider>
     );
 
+    const moveChatRoom = () => {
+      navigation.navigate('ChatRoom')  
+    }
   return (
     <NativeBaseProvider>
       <SafeAreaView>
+      
         {roomList.map((eachroom) => {
           return (
             <View style={styles.container} key={eachroom.id}>
               <Text style={styles.texts}>{eachroom.name}</Text>
               <Box style={styles.icon}>
                 <IconButton
+                  icon={<Icon as={Entypo} name="check" />}
+                  onPress={moveChatRoom}
+                />
+                <IconButton
                   icon={<Icon as={Entypo} name="pencil" />}
                   onPress={() => setUpdateModal(true)}
                 />
                 <IconButton
                   icon={<Icon as={Entypo} name="trash" />}
-                  // onPress={deleteUser}
+                  // onPress={onClickRemove}
                 />
               </Box>
             </View>
           );
         })}
+        
       </SafeAreaView>
       <Fab
         renderInPortal={false}
@@ -157,7 +154,7 @@ export default function Rooms() {
           <Modal.Body>
             <FormControl>
               <FormControl.Label>방 이름</FormControl.Label>
-              <Input onChangeText={inputChange} />
+              <Input onChangeText={inputChange} value={roomName} />
             </FormControl>
           </Modal.Body>
           <Modal.Footer>
@@ -198,13 +195,13 @@ export default function Rooms() {
               <Button
                 variant="ghost"
                 colorScheme="blueGray"
+                onPress={() => {
+                  setUpdateModal(false);
+                }}
               >
                 취소
               </Button>
-              <Button
-              >
-                수정하기
-              </Button>
+              <Button>수정하기</Button>
             </Button.Group>
           </Modal.Footer>
         </Modal.Content>
@@ -221,7 +218,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 10
+    padding: 10,
   },
   loadingCotainer: {
     width: "100%",
@@ -234,13 +231,13 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: 20
+    fontSize: 20,
   },
   icon: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-  }
+  },
 });
 
 // const listUp = async () => {

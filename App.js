@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   // initializeApp(firebaseConfig);
-
+  
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Rooms">
